@@ -1,0 +1,172 @@
+﻿# voice
+
+## Overview
+
+開閉指示と照度センサーのon・offを送信できる
+
+## Description
+
+Voiceから送信される音声は開閉指示と照度センサーのON・OFFの2種類である。開閉指示は５段階で切る。詳しくは、始点から終点を１００％とすると、「開けて・閉めて」を詳しく言うと１００％、「半分開けて・閉めて」<br/>と言うと、５０% 「少し占めて・開けて」というと２５％開ける・閉める。<br/>また、照度センサーのON・OFFを切り替えることができる。「LOCKして」と言うと、照度データから開閉判断するのを停止する。「LOCK解除して」というと、開閉判断するのを再開する。
+
+### Input and Output
+
+Voiceから送信される音声は開閉指示と照度センサーのON・OFFの2種類である。開閉指示は５段階で切る。詳しくは、始点から終点を１００％とすると、「開けて・閉めて」を詳しく言うと１００％、「半分開けて・閉めて」<br/>と言うと、５０% 「少し占めて・開けて」というと２５％開ける・閉める。<br/>また、照度センサーのON・OFFを切り替えることができる。「LOCKして」と言うと、照度データから開閉判断するのを停止する。「LOCK解除して」というと、開閉判断するのを再開する。
+
+### Algorithm etc
+
+Voiceから送信される音声は開閉指示と照度センサーのON・OFFの2種類である。開閉指示は５段階で切る。詳しくは、始点から終点を１００％とすると、「開けて・閉めて」を詳しく言うと１００％、「半分開けて・閉めて」<br/>と言うと、５０% 「少し占めて・開けて」というと２５％開ける・閉める。<br/>また、照度センサーのON・OFFを切り替えることができる。「LOCKして」と言うと、照度データから開閉判断するのを停止する。「LOCK解除して」というと、開閉判断するのを再開する。
+
+### Basic Information
+
+|  |  |
+----|---- 
+| Module Name | voice |
+| Description | 開閉指示と照度センサーのon・offを送信できる |
+| Version | 1.0.0 |
+| Vendor | Kobayasi |
+| Category | onseiwoyomitoru |
+| Comp. Type | STATIC |
+| Act. Type | PERIODIC |
+| Kind | DataFlowComponent |
+| MAX Inst. | 1 |
+
+### Activity definition
+
+<table>
+  <tr>
+    <td rowspan="4">on_initialize</td>
+    <td colspan="2">implemented</td>
+    <tr>
+      <td>Description</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>PreCondition</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>PostCondition</td>
+      <td></td>
+    </tr>
+  </tr>
+  <tr>
+    <td>on_finalize</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>on_startup</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>on_shutdown</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>on_activated</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>on_deactivated</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>on_execute</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>on_aborting</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>on_error</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>on_reset</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>on_state_update</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>on_rate_changed</td>
+    <td colspan="2"></td>
+  </tr>
+</table>
+
+### InPorts definition
+
+
+### OutPorts definition
+
+#### voice_out
+
+
+
+<table>
+  <tr>
+    <td>DataType</td>
+    <td>RTC::TimedWString</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>IDL file</td>
+    <td colspan="2">BasicDataType.idl</td>
+  </tr>
+  <tr>
+    <td>Number of Data</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>Semantics</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>Unit</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>Occirrence frecency Period</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td>Operational frecency Period</td>
+    <td colspan="2"></td>
+  </tr>
+</table>
+
+
+### Service Port definition
+
+
+### Configuration definition
+
+
+## Demo
+
+## Requirement
+
+## Setup
+
+### Windows
+
+### Ubuntu
+
+## Usage
+
+## Running the tests
+
+## LICENCE
+
+
+
+
+## References
+
+
+
+
+## Author
+
+

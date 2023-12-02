@@ -1,0 +1,54 @@
+# CO2 CMake config file
+#
+# This file sets the following variables:
+# CO2_FOUND - Always TRUE.
+# CO2_INCLUDE_DIRS - Directories containing the CO2 include files.
+# CO2_IDL_DIRS - Directories containing the CO2 IDL files.
+# CO2_LIBRARIES - Libraries needed to use CO2.
+# CO2_DEFINITIONS - Compiler flags for CO2.
+# CO2_VERSION - The version of CO2 found.
+# CO2_VERSION_MAJOR - The major version of CO2 found.
+# CO2_VERSION_MINOR - The minor version of CO2 found.
+# CO2_VERSION_REVISION - The revision version of CO2 found.
+# CO2_VERSION_CANDIDATE - The candidate version of CO2 found.
+
+message(STATUS "Found CO2-@PROJECT_VERSION@")
+set(CO2_FOUND TRUE)
+
+find_package(<dependency> REQUIRED)
+
+#set(CO2_INCLUDE_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@"
+#    ${<dependency>_INCLUDE_DIRS}
+#    )
+#
+#set(CO2_IDL_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@/idl")
+set(CO2_INCLUDE_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@"
+    ${<dependency>_INCLUDE_DIRS}
+    )
+set(CO2_IDL_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@/idl")
+
+
+if(WIN32)
+    set(CO2_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_STATIC_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+else(WIN32)
+    set(CO2_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_SHARED_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+endif(WIN32)
+
+set(CO2_DEFINITIONS ${<dependency>_DEFINITIONS})
+
+set(CO2_VERSION @PROJECT_VERSION@)
+set(CO2_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(CO2_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(CO2_VERSION_REVISION @PROJECT_VERSION_REVISION@)
+set(CO2_VERSION_CANDIDATE @PROJECT_VERSION_CANDIDATE@)
+

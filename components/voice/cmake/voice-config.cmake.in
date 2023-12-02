@@ -1,0 +1,54 @@
+# voice CMake config file
+#
+# This file sets the following variables:
+# voice_FOUND - Always TRUE.
+# voice_INCLUDE_DIRS - Directories containing the voice include files.
+# voice_IDL_DIRS - Directories containing the voice IDL files.
+# voice_LIBRARIES - Libraries needed to use voice.
+# voice_DEFINITIONS - Compiler flags for voice.
+# voice_VERSION - The version of voice found.
+# voice_VERSION_MAJOR - The major version of voice found.
+# voice_VERSION_MINOR - The minor version of voice found.
+# voice_VERSION_REVISION - The revision version of voice found.
+# voice_VERSION_CANDIDATE - The candidate version of voice found.
+
+message(STATUS "Found voice-@PROJECT_VERSION@")
+set(voice_FOUND TRUE)
+
+find_package(<dependency> REQUIRED)
+
+#set(voice_INCLUDE_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@"
+#    ${<dependency>_INCLUDE_DIRS}
+#    )
+#
+#set(voice_IDL_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@/idl")
+set(voice_INCLUDE_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@"
+    ${<dependency>_INCLUDE_DIRS}
+    )
+set(voice_IDL_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@/idl")
+
+
+if(WIN32)
+    set(voice_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_STATIC_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+else(WIN32)
+    set(voice_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_SHARED_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+endif(WIN32)
+
+set(voice_DEFINITIONS ${<dependency>_DEFINITIONS})
+
+set(voice_VERSION @PROJECT_VERSION@)
+set(voice_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(voice_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(voice_VERSION_REVISION @PROJECT_VERSION_REVISION@)
+set(voice_VERSION_CANDIDATE @PROJECT_VERSION_CANDIDATE@)
+

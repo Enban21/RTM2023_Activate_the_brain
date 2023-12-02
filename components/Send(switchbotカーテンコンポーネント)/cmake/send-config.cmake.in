@@ -1,0 +1,54 @@
+# Send CMake config file
+#
+# This file sets the following variables:
+# Send_FOUND - Always TRUE.
+# Send_INCLUDE_DIRS - Directories containing the Send include files.
+# Send_IDL_DIRS - Directories containing the Send IDL files.
+# Send_LIBRARIES - Libraries needed to use Send.
+# Send_DEFINITIONS - Compiler flags for Send.
+# Send_VERSION - The version of Send found.
+# Send_VERSION_MAJOR - The major version of Send found.
+# Send_VERSION_MINOR - The minor version of Send found.
+# Send_VERSION_REVISION - The revision version of Send found.
+# Send_VERSION_CANDIDATE - The candidate version of Send found.
+
+message(STATUS "Found Send-@PROJECT_VERSION@")
+set(Send_FOUND TRUE)
+
+find_package(<dependency> REQUIRED)
+
+#set(Send_INCLUDE_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@"
+#    ${<dependency>_INCLUDE_DIRS}
+#    )
+#
+#set(Send_IDL_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@/idl")
+set(Send_INCLUDE_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@"
+    ${<dependency>_INCLUDE_DIRS}
+    )
+set(Send_IDL_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@/idl")
+
+
+if(WIN32)
+    set(Send_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_STATIC_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+else(WIN32)
+    set(Send_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_SHARED_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+endif(WIN32)
+
+set(Send_DEFINITIONS ${<dependency>_DEFINITIONS})
+
+set(Send_VERSION @PROJECT_VERSION@)
+set(Send_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(Send_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(Send_VERSION_REVISION @PROJECT_VERSION_REVISION@)
+set(Send_VERSION_CANDIDATE @PROJECT_VERSION_CANDIDATE@)
+

@@ -1,0 +1,54 @@
+# Base_value_judgment CMake config file
+#
+# This file sets the following variables:
+# Base_value_judgment_FOUND - Always TRUE.
+# Base_value_judgment_INCLUDE_DIRS - Directories containing the Base_value_judgment include files.
+# Base_value_judgment_IDL_DIRS - Directories containing the Base_value_judgment IDL files.
+# Base_value_judgment_LIBRARIES - Libraries needed to use Base_value_judgment.
+# Base_value_judgment_DEFINITIONS - Compiler flags for Base_value_judgment.
+# Base_value_judgment_VERSION - The version of Base_value_judgment found.
+# Base_value_judgment_VERSION_MAJOR - The major version of Base_value_judgment found.
+# Base_value_judgment_VERSION_MINOR - The minor version of Base_value_judgment found.
+# Base_value_judgment_VERSION_REVISION - The revision version of Base_value_judgment found.
+# Base_value_judgment_VERSION_CANDIDATE - The candidate version of Base_value_judgment found.
+
+message(STATUS "Found Base_value_judgment-@PROJECT_VERSION@")
+set(Base_value_judgment_FOUND TRUE)
+
+find_package(<dependency> REQUIRED)
+
+#set(Base_value_judgment_INCLUDE_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@"
+#    ${<dependency>_INCLUDE_DIRS}
+#    )
+#
+#set(Base_value_judgment_IDL_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@/idl")
+set(Base_value_judgment_INCLUDE_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@"
+    ${<dependency>_INCLUDE_DIRS}
+    )
+set(Base_value_judgment_IDL_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@/idl")
+
+
+if(WIN32)
+    set(Base_value_judgment_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_STATIC_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+else(WIN32)
+    set(Base_value_judgment_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_SHARED_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+endif(WIN32)
+
+set(Base_value_judgment_DEFINITIONS ${<dependency>_DEFINITIONS})
+
+set(Base_value_judgment_VERSION @PROJECT_VERSION@)
+set(Base_value_judgment_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(Base_value_judgment_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(Base_value_judgment_VERSION_REVISION @PROJECT_VERSION_REVISION@)
+set(Base_value_judgment_VERSION_CANDIDATE @PROJECT_VERSION_CANDIDATE@)
+

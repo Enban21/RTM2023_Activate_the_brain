@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rtc:RtcProfile rtc:version="0.3" rtc:id="RTC:Kobayasi:onseiwoyomitoru:voice:1.0.0" xmlns:rtc="http://www.openrtp.org/namespaces/rtc" xmlns:rtcExt="http://www.openrtp.org/namespaces/rtc_ext" xmlns:rtcDoc="http://www.openrtp.org/namespaces/rtc_doc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <rtc:BasicInfo xsi:type="rtcExt:basic_info_ext" rtcExt:saveProject="voice" rtc:updateDate="2023-11-27T17:53:02.000+09:00" rtc:creationDate="2023-11-18T17:42:56.000+09:00" rtc:abstract="Voiceから送信される音声は開閉指示と照度センサーのON・OFFの2種類である。開閉指示は５段階で切る。詳しくは、始点から終点を１００％とすると、「開けて・閉めて」を詳しく言うと１００％、「半分開けて・閉めて」 と言うと、５０% 「少し占めて・開けて」というと２５％開ける・閉める。 また、照度センサーのON・OFFを切り替えることができる。「LOCKして」と言うと、照度データから開閉判断するのを停止する。「LOCK解除して」というと、開閉判断するのを再開する。" rtc:version="1.0.0" rtc:vendor="Kobayasi" rtc:maxInstances="1" rtc:executionType="PeriodicExecutionContext" rtc:executionRate="1000.0" rtc:description="開閉指示と照度センサーのon・offを送信できる" rtc:category="onseiwoyomitoru" rtc:componentKind="DataFlowComponent" rtc:activityType="PERIODIC" rtc:componentType="STATIC" rtc:name="voice">
+        <rtcDoc:Doc rtcDoc:reference="" rtcDoc:license="" rtcDoc:creator="" rtcDoc:algorithm="Voiceから送信される音声は開閉指示と照度センサーのON・OFFの2種類である。開閉指示は５段階で切る。詳しくは、始点から終点を１００％とすると、「開けて・閉めて」を詳しく言うと１００％、「半分開けて・閉めて」&lt;br/&gt;と言うと、５０% 「少し占めて・開けて」というと２５％開ける・閉める。&lt;br/&gt;また、照度センサーのON・OFFを切り替えることができる。「LOCKして」と言うと、照度データから開閉判断するのを停止する。「LOCK解除して」というと、開閉判断するのを再開する。" rtcDoc:inout="Voiceから送信される音声は開閉指示と照度センサーのON・OFFの2種類である。開閉指示は５段階で切る。詳しくは、始点から終点を１００％とすると、「開けて・閉めて」を詳しく言うと１００％、「半分開けて・閉めて」&lt;br/&gt;と言うと、５０% 「少し占めて・開けて」というと２５％開ける・閉める。&lt;br/&gt;また、照度センサーのON・OFFを切り替えることができる。「LOCKして」と言うと、照度データから開閉判断するのを停止する。「LOCK解除して」というと、開閉判断するのを再開する。" rtcDoc:description="Voiceから送信される音声は開閉指示と照度センサーのON・OFFの2種類である。開閉指示は５段階で切る。詳しくは、始点から終点を１００％とすると、「開けて・閉めて」を詳しく言うと１００％、「半分開けて・閉めて」&lt;br/&gt;と言うと、５０% 「少し占めて・開けて」というと２５％開ける・閉める。&lt;br/&gt;また、照度センサーのON・OFFを切り替えることができる。「LOCKして」と言うと、照度データから開閉判断するのを停止する。「LOCK解除して」というと、開閉判断するのを再開する。"/>
+        <rtcExt:Properties rtcExt:value="false" rtcExt:name="FSM"/>
+        <rtcExt:Properties rtcExt:value="StaticFSM" rtcExt:name="FSMType"/>
+    </rtc:BasicInfo>
+    <rtc:Actions>
+        <rtc:OnInitialize xsi:type="rtcDoc:action_status_doc" rtc:implemented="true"/>
+        <rtc:OnFinalize xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnStartup xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnShutdown xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnActivated xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnDeactivated xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnAborting xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnError xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnReset xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnExecute xsi:type="rtcDoc:action_status_doc" rtc:implemented="false">
+            <rtcDoc:Doc rtcDoc:postCondition="" rtcDoc:preCondition="" rtcDoc:description="Voiceから送信される音声は開閉指示と照度センサーのON・OFFの2種類である。開閉指示は５段階で切る。詳しくは、始点から終点を１００％とすると、「開けて・閉めて」を詳しく言うと１００％、「半分開けて・閉めて」&lt;br/&gt;と言うと、５０% 「少し占めて・開けて」というと２５％開ける・閉める。&lt;br/&gt;また、照度センサーのON・OFFを切り替えることができる。「LOCKして」と言うと、照度データから開閉判断するのを停止する。「LOCK解除して」というと、開閉判断するのを再開する。"/>
+        </rtc:OnExecute>
+        <rtc:OnStateUpdate xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnRateChanged xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+    </rtc:Actions>
+    <rtc:DataPorts xsi:type="rtcExt:dataport_ext" rtcExt:position="RIGHT" rtcExt:variableName="" rtc:unit="" rtc:subscriptionType="" rtc:dataflowType="" rtc:interfaceType="" rtc:idlFile="&lt;RTM_ROOT&gt;\rtm\idl\BasicDataType.idl" rtc:type="RTC::TimedWString" rtc:name="voice_out" rtc:portType="DataOutPort"/>
+    <rtc:Language xsi:type="rtcExt:language_ext" rtc:kind="Python"/>
+</rtc:RtcProfile>
