@@ -10,4 +10,4 @@
   - 教室の中のC02濃度を計測
   - CO₂濃度が高いと換気をLED点滅で促す
 ## マニュアル
-- https://github.com/Enban21/RTM2023_Activate_the_brain/tree/main/manuals
+- https://github.com/Enban21/RTM2023_Activate_the_brain/blob/main/manuals/manual.pdf
