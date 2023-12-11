@@ -31,8 +31,8 @@ import OpenRTM_aist
 # </rtc-template>
 
 NORMAL = 0
-CAUTION = 1
-WARNING = 2
+CAUTION = 3
+WARNING = 1
 
 # This module's spesification
 # <rtc-template block="module_spec">
@@ -72,7 +72,7 @@ class Base_value_judgment(OpenRTM_aist.DataFlowComponentBase):
     def __init__(self, manager):
         OpenRTM_aist.DataFlowComponentBase.__init__(self, manager)
 
-        self._d_CO2_In = OpenRTM_aist.instantiateDataType(RTC.TimedShort)
+        self._d_CO2_In = OpenRTM_aist.instantiateDataType(RTC.TimedFloat)
         """
         """
         self._CO2_InIn = OpenRTM_aist.InPort("CO2_In", self._d_CO2_In)
@@ -197,10 +197,11 @@ class Base_value_judgment(OpenRTM_aist.DataFlowComponentBase):
     #
     def onExecute(self, ec_id):
         co2 = self._CO2_InIn.read()
+        co2_data = co2.data
         result = NORMAL
-        if 2500 > co2 >= 1250:
+        if 2500 > co2_data >= 1250:
             result = CAUTION
-        elif co2 > 2500:
+        elif co2_data > 2500:
             result = WARNING
 
         print(result)
@@ -307,4 +308,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -19,10 +19,10 @@ sys.path.append(".")
 # Import RTM module
 import RTC
 import OpenRTM_aist
-
+import RPi.GPIO as GPIO
 #other-import
 
-from Base_value_judgement import NORMAL, WARNING, CAUTION
+from Base_value_judgment import NORMAL, WARNING, CAUTION
 
 
 # Import Service implementation class
@@ -82,7 +82,8 @@ class LED(OpenRTM_aist.DataFlowComponentBase):
 
         # initialize of configuration-data.
 
-        self.speed_property = NORMAL
+        self.blink_frequency = 0.0
+        self.is_bright = False
 
         # <rtc-template block="init_conf_param">
 		
@@ -106,16 +107,8 @@ class LED(OpenRTM_aist.DataFlowComponentBase):
         GPIO.setup(LED_PIN, GPIO.OUT)
         GPIO.output(LED_PIN, GPIO.LOW)
 
-        self.is_bright = False
         self.p = GPIO.PWM(LED_PIN, 500)
         self.p.start(0)
-		
-        # プロパティから速度取得
-        prop = self.getProperties()
-        if prop.hasKey("speed_property"):
-            self.speed_property = prop.getProperty("speed_property")
-
-        self.blink_frequency = 0.0
     
 
         return RTC.RTC_OK
@@ -194,22 +187,43 @@ class LED(OpenRTM_aist.DataFlowComponentBase):
     ##
     ##
     def onExecute(self, ec_id):
-        self.is_bright = not self.is_bright
-        self.p.ChangeDutyCycle(100 if self.is_bright else 0)
+        judgedvalue = self._LED_InIn.read()
+        judgedvalue_data = judgedvalue.data
+
+        if judgedvalue_data == NORMAL:
+                self.is_bright= False
+        else:
+            self.is_bright = not self.is_bright
+            self.p.ChangeDutyCycle(100 if self.is_bright else 0)
+            self.blink_frequency = judgedvalue_data
 
         # self.speed_property に基いて点滅速度制御
-        if self.speed_property == NORMAL:
-            self.blink_frequency == 0.0
-        elif self.speed_property == WARNING:
-            self.blink_frequency == 2.0
-        elif self.speed_property == CAUTION:
-            self.blink_frequency == 5.0
 
 
+        time.sleep(self.blink_frequency)
+
+        print ("judgedvalue_data" , self.blink_frequency)
 
 
         return RTC.RTC_OK
 	
+    """    
+    self.is_bright = not self.is_bright
+    self.p.ChangeDutyCycle(100 if self.is_bright else 0)
+    judgedvalue = self._LED_InIn.read()
+    judgedvalue_data = judgedvalue.data
+    # self.speed_property に基いて点滅速度制御
+    if judgedvalue_data == NORMAL:
+        self.blink_frequency = not self.is_bright
+    elif judgedvalue_data == WARNING:
+        self.blink_frequency = 0.5
+    elif judgedvalue_data == CAUTION:
+        self.blink_frequency = 2.0
+
+        time.sleep(self.blink_frequency)
+
+        print ("judgedvalue_data" , self.blink_frequency)
+    """
     ###
     ##
     ## The aborting action when main logic error occurred.
