@@ -131,10 +131,10 @@ class Send(OpenRTM_aist.DataFlowComponentBase):
         # Set CORBA Service Ports
 		
         # open token
-        self.token = '0ac894b6b710c87cc7845360aeadeea7eeb7c1f6de8cbad0d38f44c2c7c5f67329eba9cfc1fa8e48480ee73381bcdb37'
+        self.token = ''
         # secret key
-        self.secret = '84f376678cf65c590e87a8a6a6071397'
-        self.device_id = 'C81008179DBC'
+        self.secret = ''
+        self.device_id = ''
 
         nonce = uuid.uuid4()
         timestamp = int(round(time.time() * 1000))
