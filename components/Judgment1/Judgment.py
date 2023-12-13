@@ -14,11 +14,18 @@
 
 import sys
 import time
+import re
 sys.path.append(".")
 
 # Import RTM module
 import RTC
 import OpenRTM_aist
+
+
+RE_OPEN_FULL  = re.compile("(カーテンを?)?( |　)?(全部|全て)?( |　)?開(い|け)て")
+RE_OPEN_FEW   = re.compile("(カーテンを?)?( |　)?(少し|ちょっと)( |　)?開(い|け)て")
+RE_CLOSE_FULL = re.compile("(カーテンを?)?( |　)?(全部|全て)?( |　)?閉(め|じ)て")
+RE_CLOSE_FEW  = re.compile("(カーテンを?)?( |　)?(少し|ちょっと)( |　)?閉(め|じ)て")
 
 
 # Import Service implementation class
@@ -161,6 +168,9 @@ class Judgment(OpenRTM_aist.DataFlowComponentBase):
     #
     #
     def onActivated(self, ec_id):
+        # 一度音声でのカーテン位置の調整をした場合、この変数を True にして、明るさでの調整をストップする
+        # "解除" という音声が入力された場合に False にして、明るさでの調整を再開させる
+        self.ignore_brightness = False
     
         return RTC.RTC_OK
 	
@@ -187,46 +197,74 @@ class Judgment(OpenRTM_aist.DataFlowComponentBase):
     #
     #
     def onExecute(self, ec_id):
-        if self._VoiceInIn.isNew(): #新しいデータが来たか確認(self._入力ポート名In.isNew())
-            self._d_VoiceIn = self._VoiceInIn.read() #値を読み込む(self._d_入力ポート名 = self._入力ポート名In.read())
-            text = self._d_VoiceIn.data # text = self._d_入力ポート名.data
-            print(text)             
+        # 最後にデータを書き込むため、self._d_SendOut.data を更新しない場合は即座に関数を終了する
+        has_new_voice_input = self._VoiceInIn.isNew()
+        if self.ignore_brightness or has_new_voice_input:  # 明るさを無視しているか、新しい音声の入力があるか
+            """ 音声によるカーテンの位置調整
+            """
+            if not has_new_voice_input:
+                # 新しい音声の入力がなければ終了する (明るさを無視しているなら、新しい音声の入力がない場合もある)
+                return RTC.RTC_OK
 
-            if self._LightInIn.isNew():
-                self._d_LightIn = self._LightInIn.read() #値を読み込む(self._d_入力ポート名 = self._入力ポート名In.read())
-                number =  self._d_LightIn.data # text = self._d_入力ポート名.data
-                print(number)  
-                if text == "開いて" or text =="開けて" or  text =="カーテン開けて" or text =="カーテンを開けて" or text =="カーテンを全部開いて" or text =="カーテンを全て開けて" or text =="カーテン全て開いて":
-                    self._d_SendOut.data = 0
-                    self._SendOutOut.write()
-                elif text ==  "少し開けて" or text =="少し開いて" or text =="少し開いて" or text =="ちょっと開けて" or text =="ちょっと開いて" or text =="カーテンを少し開けて" or text =="カーテンを少し開いて"  or text =="カーテン少し開けて" or text =="カーテン少し開いて":
-                    self._d_SendOut.data = 75
-                    self._SendOutOut.write()
-                elif text ==  "カーテン閉めて" or text =="閉めて" or text =="カーテンを閉めて" or text =="カーテンを全部閉めて" or text =="カーテン全て閉めて":
-                    self._d_SendOut.data = 100
-                    self._SendOutOut.write()  
-                elif text ==  "少し閉めてカーテン" or text =="少し閉めて" or text =="少しカーテンを閉めて" or text =="カーテンを少し閉めて" or text =="カーテン少し閉めて" or text =="少しカーテン閉めて":
-                    self._d_SendOut.data = 25
-                    self._SendOutOut.write()
-                elif text == "解除" and number < 500:
-                    self._d_SendOut.data = 0
-                    self._SendOutOut.write()    
-                elif text == "解除" and number < 650:
-                    self._d_SendOut.data = 25
-                    self._SendOutOut.write()    
-                elif text == "解除" and number < 800:
-                    self._d_SendOut.data = 50
-                    self._SendOutOut.write()    
-                elif text == "解除" and number < 1050:
-                    self._d_SendOut.data = 75
-                    self._SendOutOut.write()    
-                elif text == "解除" and number >= 1050:
-                    self._d_SendOut.data = 100
-                    self._SendOutOut.write()                                    
-    
+            self._d_VoiceIn = self._VoiceInIn.read()  # 値を読み込む(self._d_入力ポート名 = self._入力ポート名In.read())
+            voice_input: str = self._d_VoiceIn.data  # text = self._d_入力ポート名.data
+
+            voice_input.replace('　', '')  # 全角スペースを消す
+            voice_input.replace(' ', '')  # スペースを消す
+            print("音声:", voice_input)
+
+            if voice_input == "解除":
+                self.ignore_brightness = False
+                print(00)
+                return RTC.RTC_OK  # 位置の調整は次呼び出されたときに行う
+            elif RE_OPEN_FULL.fullmatch(voice_input):
+                self._d_SendOut.data = 0
+                print(0)
+            elif RE_OPEN_FEW.fullmatch(voice_input):
+                self._d_SendOut.data = 25
+                print(25)
+            elif RE_CLOSE_FULL.fullmatch(voice_input):
+                self._d_SendOut.data = 100
+                print(100)
+            elif RE_CLOSE_FEW.fullmatch(voice_input):
+                self._d_SendOut.data = 75
+                print(75)
+            else:
+                return RTC.RTC_OK  # マッチしなければ何もせずに関数を終了する
+
+            self._SendOutOut.write()
+            self.ignore_brightness = True  # 音声による位置の調整を行った場合にのみ、明るさでの調整を無視する
+        else:
+            """ 明るさによるカーテンの位置調整
+            self.follow_voice_input が False の場合にのみ行う
+            """
+            if not self._LightInIn.isNew():  # 明るさの入力がない場合は関数を終了する
+                return RTC.RTC_OK
+            
+            self._d_LightIn = self._LightInIn.read()
+            brightness = self._d_LightIn.data
+            print("明るさ:", brightness)
+
+            if brightness < 500:
+                self._d_SendOut.data = 0
+                print(0)
+            elif brightness < 650:
+                self._d_SendOut.data = 25
+                print(25)
+            elif brightness < 800:
+                self._d_SendOut.data = 50
+                print(50)
+            elif brightness < 1050:
+                self._d_SendOut.data = 75
+                print(75)
+            else:  # 明るさが 1050 以上
+                self._d_SendOut.data = 100
+                print(100)
+            self._SendOutOut.write()
+
         return RTC.RTC_OK
-    
-    
+
+
     ###
     ##
     ## The aborting action when main logic error occurred.
@@ -326,4 +364,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -25,7 +25,7 @@ import time
 
 import board
 import adafruit_bh1750
-
+import serial
 
 
 
@@ -161,7 +161,14 @@ class light(OpenRTM_aist.DataFlowComponentBase):
     #
     #
     def onActivated(self, ec_id):
-    
+        
+            #sensor = init_lux_sensor()
+        self.i2c=board.I2C()
+        self.sensor= adafruit_bh1750.BH1750(self.i2c)
+        
+
+        
+        
         return RTC.RTC_OK
 	
     ###
@@ -189,16 +196,12 @@ class light(OpenRTM_aist.DataFlowComponentBase):
     #
     def onExecute(self, ec_id):
         
-        #sensor = init_lux_sensor()
-        i2c=board.I2C()
-        sensor= adafruit_bh1750.BH1750(i2c)
-
-        
-        print(sensor)
-            
-        self._d_light_out.data = sensor #self._d_アウトポート名.data = 送りたい変数 
+        time.sleep(1)
+        print(self.sensor.lux)
+        self._d_light_out.data = self.sensor.lux #self._d_アウトポート名.data = 送りたい変数 
         self._light_outOut.write()   #self._アウトポート名Out.write() で、self._d_アウトポート名.dataに格納したデータを送信。
-          
+        
+     
         return RTC.RTC_OK
 	
     ###

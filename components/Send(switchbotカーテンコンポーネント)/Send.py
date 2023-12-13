@@ -131,36 +131,38 @@ class Send(OpenRTM_aist.DataFlowComponentBase):
         # Set CORBA Service Ports
 		
         # open token
-        token = ''
+        self.token = '0ac894b6b710c87cc7845360aeadeea7eeb7c1f6de8cbad0d38f44c2c7c5f67329eba9cfc1fa8e48480ee73381bcdb37'
         # secret key
-        secret = ''
-        device_id = ''
+        self.secret = '84f376678cf65c590e87a8a6a6071397'
+        self.device_id = 'C81008179DBC'
 
         nonce = uuid.uuid4()
         timestamp = int(round(time.time() * 1000))
-        string_to_sign = f'{token}{timestamp}{nonce}'
+        string_to_sign = f'{self.token}{timestamp}{nonce}'
 
         string_to_sign = bytes(string_to_sign, 'utf-8')
-        secret = bytes(secret, 'utf-8')
+        self.secret = bytes(self.secret, 'utf-8')
 
-        sign = base64.b64encode(hmac.new(secret, msg=string_to_sign, digestmod=hashlib.sha256).digest())
-        print(f'Authorization: {token}')
+        sign = base64.b64encode(hmac.new(self.secret, msg=string_to_sign, digestmod=hashlib.sha256).digest())
+        print(f'Authorization: {self.token}')
         print(f't: {timestamp}')
         print(f'sign: {str(sign, "utf-8")}')
         print(f'nonce: {nonce}')
 
         self.session = requests.Session()
-        self.session.headers['Authorization'] = token
+        self.session.headers['Authorization'] = self.token
         self.session.headers['Content-Type'] = 'application/json'
         self.session.headers['t'] = str(timestamp)
         self.session.headers['sign'] = str(sign, 'utf-8')
         self.session.headers['nonce'] = str(nonce)
 
-        devices = self.session.post(f'{API_HOST}/devices/{device_id}/commands', json={
+        #open
+        devices = self.session.post(f'{API_HOST}/devices/{self.device_id}/commands', json={
         'commandType': 'command',
         'command': 'turnOn',    
         'parameter': 'default',
         }).json()
+        self.position=100
         print(devices)
 
         return RTC.RTC_OK
@@ -241,8 +243,6 @@ class Send(OpenRTM_aist.DataFlowComponentBase):
     #
     #
     def onExecute(self, ec_id):
-        device_id = ''
-
         if self._SendInIn.isNew(): #新しいデータが来たか確認(self._入力ポート名In.isNew())
             self._d_SendIn = self._SendInIn.read() #値を読み込む(self._d_入力ポート名 = self._入力ポート名In.read())
             if self._d_SendIn.data > 100 or self._d_SendIn.data<0 : #要素が9より大きい時
@@ -251,44 +251,40 @@ class Send(OpenRTM_aist.DataFlowComponentBase):
             Discrimi =  self._d_SendIn.data # text = self._d_入力ポート名.data
             
             print(Discrimi)
+            time.sleep(1)
 
-            if Discrimi==0:
-                devices = self.session.post(f'{API_HOST}/devices/{device_id}/commands', json={
-                'commandType': 'command',
-                'command': 'turnOff',
-                'parameter': 'default',
-                }).json()
-            elif Discrimi==25:
-                devices = self.session.post(f'{API_HOST}/devices/{device_id}/commands', json={
-                'commandType': 'command',
-                'command': 'setPosition',
-                'parameter': '0,ff,25',#25%
-                }).json()
-            elif Discrimi==50:
-                devices = self.session.post(f'{API_HOST}/devices/{device_id}/commands', json={
-                'commandType': 'command',
-                'command': 'setPosition',
-                'parameter': '0,ff,50',#50%
-                }).json()
-            elif Discrimi==75:
-                devices = self.session.post(f'{API_HOST}/devices/{device_id}/commands', json={
-                'commandType': 'command',
-                'command': 'setPosition',
-                'parameter': '0,ff,75',#75%
-                }).json()
-            elif Discrimi==100:
-                devices = self.session.post(f'{API_HOST}/devices/{device_id}/commands', json={
-                'commandType': 'command',
-                'command': 'turnOn',
-                'parameter': 'default',#100%
-                }).json()
-            
-            else:
-                devices = self.session.post(f'{API_HOST}/devices/{device_id}/commands', json={
-                'commandType': 'command',
-                'command': 'turnOff',
-                'parameter': 'default',
-                }).json()
+            if(Discrimi != self.position):
+                if Discrimi==0:
+                    devices = self.session.post(f'{API_HOST}/devices/{self.device_id}/commands', json={
+                    'commandType': 'command',
+                    'command': 'turnOn',    
+                    'parameter': 'default',
+                    }).json()
+                elif Discrimi==25:
+                    devices = self.session.post(f'{API_HOST}/devices/{self.device_id}/commands', json={
+                    'commandType': 'command',
+                    'command': 'setPosition',
+                    'parameter': '0,ff,25',#25%
+                    }).json()
+                elif Discrimi==50:
+                    devices = self.session.post(f'{API_HOST}/devices/{self.device_id}/commands', json={
+                    'commandType': 'command',
+                    'command': 'setPosition',
+                    'parameter': '0,ff,50',#50%
+                    }).json()
+                elif Discrimi==75:
+                    devices = self.session.post(f'{API_HOST}/devices/{self.device_id}/commands', json={
+                    'commandType': 'command',
+                    'command': 'setPosition',
+                    'parameter': '0,ff,75',#75%
+                    }).json()
+                elif Discrimi==100:
+                    devices = self.session.post(f'{API_HOST}/devices/{self.device_id}/commands', json={
+                    'commandType': 'command',
+                    'command': 'turnOff',
+                    'parameter': 'default',#100%
+                    }).json()
+                self.position = Discrimi
 
         return RTC.RTC_OK
 	
